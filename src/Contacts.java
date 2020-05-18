@@ -22,19 +22,22 @@ import org.xml.sax.SAXException;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Contacts {
-	String name, ipadress, id;
+	int id;
+	String name, ipadress;
 	String tmpname, tmpip;
+	static int entries=3;
 	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
-	int entries=3;
+
 
 	public Contacts() {
-		//		contactlist.add(new Contacts("1","Julius", "10.217.77.56"));
-		//		contactlist.add(new Contacts("2","Thomas", "localhost"));
-		//		contactlist.add(new Contacts("3","Bruh", "0.0.0.0"));
+		//		contactlist.add(new Contacts(1,"Julius", "10.217.77.56"));
+		//		contactlist.add(new Contacts(2,"Thomas", "localhost"));
+		//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
 		//		safecontacts();
+		loadentries();
 	}
 
-	public Contacts(String id, String name, String ipadress) {
+	public Contacts(int id, String name, String ipadress) {
 		this.id = id;
 		this.name = name;
 		this.ipadress = ipadress;
@@ -74,8 +77,6 @@ public class Contacts {
 		NodeList nList = doc.getElementsByTagName("contactlist");
 		System.out.println("----------------------------");
 
-		//		entries = nList.getLength();
-
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			System.out.println("\nCurrent Element :" + nNode.getNodeName());
@@ -87,6 +88,26 @@ public class Contacts {
 			}
 		}
 		System.out.println("Kontakte Geladen.");
+	}
+	public void loadentries() {
+		File fXmlFile = new File("contactlist.xml");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = null;
+		Document doc = null;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			doc = dBuilder.parse(fXmlFile);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		entries = Integer.parseInt(doc.getElementsByTagName("entries").item(0).getTextContent());
+		System.out.println("Entries: "+doc.getElementsByTagName("entries").item(0).getTextContent());
 	}
 
 	public String[] loadcontact(int id) {

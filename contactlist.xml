@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <contacts>
+    <id>0</id>
+    <entries>3</entries>
     <contactlist>
+        <id>1</id>
         <name>Julius</name>
         <ipadress>10.217.77.56</ipadress>
-        <id>1</id>
+        <entries>3</entries>
     </contactlist>
     <contactlist>
+        <id>2</id>
         <name>Thomas</name>
         <ipadress>localhost</ipadress>
-        <id>2</id>
+        <entries>3</entries>
     </contactlist>
     <contactlist>
+        <id>3</id>
         <name>Bruh</name>
         <ipadress>0.0.0.0</ipadress>
-        <id>3</id>
+        <entries>3</entries>
     </contactlist>
 </contacts>

@@ -128,7 +128,7 @@ public class ChatWindow implements KeyListener, ActionListener {
 			outputToJTextArea(jta, "Bruh: ");
 			String input = getInputFromJTextArea(jta);
 			if (input.startsWith("/") == true) {
-				outputToJTextArea(jta, ch.command(input));
+				outputToJTextArea(jta, ch.executeCommand(input));
 			}
 		}
 	}
