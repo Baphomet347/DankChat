@@ -22,19 +22,20 @@ import org.xml.sax.SAXException;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Contacts {
-	String name, ipadress;
+	String name, ipadress, id;
+	String tmpname, tmpip;
 	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
+	int entries=3;
 
 	public Contacts() {
-		// contactlist.add(new Contacts("Julius", "10.217.77.56"));
-		// contactlist.add(new Contacts("Thomas", "localhost"));
-		// contactlist.add(new Contacts("Bruh", "0.0.0.0"));
-		// safecontacts();
-		loadcontacts();
-
+		//		contactlist.add(new Contacts("1","Julius", "10.217.77.56"));
+		//		contactlist.add(new Contacts("2","Thomas", "localhost"));
+		//		contactlist.add(new Contacts("3","Bruh", "0.0.0.0"));
+		//		safecontacts();
 	}
 
-	public Contacts(String name, String ipadress) {
+	public Contacts(String id, String name, String ipadress) {
+		this.id = id;
 		this.name = name;
 		this.ipadress = ipadress;
 	}
@@ -72,20 +73,48 @@ public class Contacts {
 		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 		NodeList nList = doc.getElementsByTagName("contactlist");
 		System.out.println("----------------------------");
+
+		//		entries = nList.getLength();
+
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-
 			Node nNode = nList.item(temp);
-
 			System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
 				Element eElement = (Element) nNode;
+				System.out.println("id: "+ eElement.getElementsByTagName("id").item(0).getTextContent());
 				System.out.println("name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
 				System.out.println("ip : " + eElement.getElementsByTagName("ipadress").item(0).getTextContent());
 			}
 		}
 		System.out.println("Kontakte Geladen.");
+	}
+
+	public String[] loadcontact(int id) {
+		File fXmlFile = new File("contactlist.xml");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = null;
+		Document doc = null;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			doc = dBuilder.parse(fXmlFile);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		NodeList nList = doc.getElementsByTagName("contactlist");
+		Node nNode = nList.item(id);
+
+		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+			Element eElement = (Element) nNode;
+			tmpname = eElement.getElementsByTagName("name").item(0).getTextContent();
+			tmpip = eElement.getElementsByTagName("ipadress").item(0).getTextContent();
+		}
+		return new String[] {tmpname, tmpip};
 	}
 
 	public static void main(String[] args) {

@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -6,7 +8,8 @@ public class InitComponents {
 
 	public static JFrame setupJFrameAndGet(String title, int width, int height) {
 		JFrame tmpJF = new JFrame(title);
-		tmpJF.setSize(width, height);
+		tmpJF.getContentPane().setPreferredSize(new Dimension(width, height));
+		tmpJF.pack();
 		tmpJF.setLocationRelativeTo(null);
 		tmpJF.setLayout(null);
 		tmpJF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

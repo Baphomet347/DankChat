@@ -85,6 +85,7 @@ public class ChatWindow implements KeyListener, ActionListener {
 			}
 		}
 	}
+
 	String getInputFromJTextArea(JTextArea jta) {
 		int len = 0;
 		String inputFromUser = "";
@@ -122,12 +123,16 @@ public class ChatWindow implements KeyListener, ActionListener {
 	}
 
 	void begin() {
+		CommandHandler ch = new CommandHandler();
 		while (true) {
 			outputToJTextArea(jta, "Bruh: ");
 			String input = getInputFromJTextArea(jta);
-
+			if (input.startsWith("/") == true) {
+				outputToJTextArea(jta, ch.command(input));
+			}
 		}
 	}
+
 	void configureJTextAreaForInputOutput(JTextArea jta) {
 		jta.addKeyListener(this);
 		for (MouseListener listener : jta.getMouseListeners()) {
@@ -143,12 +148,11 @@ public class ChatWindow implements KeyListener, ActionListener {
 
 	void createAndShowGUI() {
 		title = "Console";
-		jf = InitComponents.setupJFrameAndGet(title, screenWidth - 150, screenHeight - 200);
-
+		jf = InitComponents.setupJFrameAndGet(title, screenWidth - 200, screenHeight - 200);
 		jta = InitComponents.setupJTextAreaAndGet("", 1000, 100, true, true, true, false, 0, 0, 0, 0);
 		configureJTextAreaForInputOutput(jta);
 
-		jsp = InitComponents.setupScrollableJTextAreaAndGet(jta, 10, 10, screenWidth - 180, screenHeight - 180);
+		jsp = InitComponents.setupScrollableJTextAreaAndGet(jta, 10, 10, screenWidth - 220, screenHeight - 220);
 		jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		jf.add(jsp);
