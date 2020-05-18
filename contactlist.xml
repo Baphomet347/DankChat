@@ -2,14 +2,14 @@
 <contacts>
     <id>0</id>
     <contactlist>
-        <id>2</id>
-        <name>Julius</name>
-        <ipadress>10.217.77.56</ipadress>
-    </contactlist>
-    <contactlist>
         <id>1</id>
         <name>Thomas</name>
         <ipadress>localhost</ipadress>
+    </contactlist>
+    <contactlist>
+        <id>2</id>
+        <name>Julius</name>
+        <ipadress>10.217.77.56</ipadress>
     </contactlist>
     <contactlist>
         <id>3</id>

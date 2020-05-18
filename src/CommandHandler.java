@@ -46,7 +46,6 @@ public class CommandHandler {
 		if (commandfound == false) {
 			finaloutput = "command not found. for help type /help or /?";
 		}
-
 		System.out.println();
 		return finaloutput;
 
