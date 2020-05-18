@@ -19,22 +19,22 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Contacts {
 	int id;
 	String name, ipadress;
 	String tmpname, tmpip;
-	static int entries=3;
 	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
 
 
 	public Contacts() {
-		//		contactlist.add(new Contacts(1,"Julius", "10.217.77.56"));
-		//		contactlist.add(new Contacts(2,"Thomas", "localhost"));
+		//		contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
+		//		contactlist.add(new Contacts(1,"Thomas", "localhost"));
 		//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
 		//		safecontacts();
-		loadentries();
+		//		loadentries();
 	}
 
 	public Contacts(int id, String name, String ipadress) {
@@ -89,7 +89,7 @@ public class Contacts {
 		}
 		System.out.println("Kontakte Geladen.");
 	}
-	public void loadentries() {
+	public int loadentries() {
 		File fXmlFile = new File("contactlist.xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = null;
@@ -106,8 +106,9 @@ public class Contacts {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		entries = Integer.parseInt(doc.getElementsByTagName("entries").item(0).getTextContent());
-		System.out.println("Entries: "+doc.getElementsByTagName("entries").item(0).getTextContent());
+
+		System.out.println(doc.getElementsByTagName("contactlist").getLength());
+		return doc.getElementsByTagName("contactlist").getLength();
 	}
 
 	public String[] loadcontact(int id) {

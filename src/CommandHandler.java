@@ -4,7 +4,7 @@ public class CommandHandler {
 	String output, finaloutput;
 	String[] ip, name;
 	String[] commandsplit;
-
+	int contactentries=3;
 	public String executeCommand(String input) {
 		try {
 			String[] commandsplit;
@@ -18,6 +18,13 @@ public class CommandHandler {
 
 			if (command.equals("/contacts")){
 				finaloutput = contacts(modifier);
+			}
+			if (command.equals("/chat")) {
+
+
+			}
+
+			if (command.equals("/username")) {
 
 			}
 		} catch(NullPointerException e) {
@@ -32,11 +39,12 @@ public class CommandHandler {
 	public String contacts(String modifier) {
 		if (modifier.equals("-l") || modifier.equals("-list")) {
 			contacts = new Contacts();
-			name = new String[Contacts.entries];
-			ip = new String[Contacts.entries];
+			contactentries = contacts.loadentries();
+			name = new String[contactentries];
+			ip = new String[contactentries];
 			StringBuilder sb = new StringBuilder();
-			System.out.println(Contacts.entries);
-			for (int i = 0; i < Contacts.entries; i++) {
+			System.out.println(contactentries);
+			for (int i = 0; i < contactentries; i++) {
 				name[i] = (contacts.loadcontact(i)[0]).toString();
 				ip[i] = (contacts.loadcontact(i)[1]).toString();
 				String status = new ListenServer().clientStatus(ip[i], 4000);
@@ -48,9 +56,9 @@ public class CommandHandler {
 		if (modifier.equals("-a") || modifier.equals("-add")) {
 			String name = commandsplit[2];
 			String ipadress = commandsplit[3];
-			contacts.contactlist.add(new Contacts(Contacts.entries + 1, name, ipadress));
+			contacts.contactlist.add(new Contacts(contactentries + 1, name, ipadress));
 			contacts.safecontacts();
-			Contacts.entries++;
+			contactentries++;
 			output = "new contact with name: '" + name + "' and ipadress: "+ipadress+"' saved.";
 		}
 		return output;
