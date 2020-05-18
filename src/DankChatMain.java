@@ -19,10 +19,11 @@ public class DankChatMain {
 		Thread menuthread = new Thread() {
 			@Override
 			public void run() {
-				new MenuWindow().createMenu();
+				ChatWindow cw = new ChatWindow();
+				cw.createAndShowGUI();
+				cw.begin();
 			}
 		};
 		menuthread.start();
 	}
-
 }
