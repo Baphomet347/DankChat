@@ -4,34 +4,50 @@ public class CommandHandler {
 	String output, finaloutput;
 	String[] ip, name;
 	String[] commandsplit;
-	int contactentries=3;
+	int contactentries = 3;
+	boolean modifierfound, commandfound;
+
 	public String executeCommand(String input) {
-		try {
-			String[] commandsplit;
-			commandsplit = input.split(" ", 4);
-			String command, modifier;
-			command = commandsplit[0];
+		String[] commandsplit;
+		modifierfound = false;
+		commandfound = true;
+		commandsplit = input.split(" ", 3);
+		String command = null, modifier = null;
+		command = commandsplit[0];
+		System.out.println(command);
+		if (commandsplit.length == 1) {
+			modifierfound = false;
+		} else if (commandsplit[1] != null) {
 			modifier = commandsplit[1];
-
-			System.out.println(command);
-			System.out.println(modifier);
-
-			if (command.equals("/contacts")){
+		} else {
+			modifier = "invalid";
+		}
+		System.out.println(command);
+		System.out.println(modifier);
+		try {
+			switch (command) {
+			case "/contacts":
 				finaloutput = contacts(modifier);
+				break;
+			case "/chat":
+				break;
+			case "/username":
+				break;
+			default:
+				commandfound = false;
 			}
-			if (command.equals("/chat")) {
-
-
-			}
-
-			if (command.equals("/username")) {
-
-			}
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
-			finaloutput = "invalid command!";
+			finaloutput = "command not found. for help type /help or /?";
+		}
+		if (modifierfound == false) {
+			finaloutput = "modifier not found. try " + command + " -h, -help or -?";
+		}
+		if (commandfound == false) {
+			finaloutput = "command not found. for help type /help or /?";
 		}
 
+		System.out.println();
 		return finaloutput;
 
 	}
@@ -47,19 +63,19 @@ public class CommandHandler {
 			for (int i = 0; i < contactentries; i++) {
 				name[i] = (contacts.loadcontact(i)[0]).toString();
 				ip[i] = (contacts.loadcontact(i)[1]).toString();
-				String status = new ListenServer().clientStatus(ip[i], 4000);
-				sb.append("name: " + name[i] + " | ipadress: " + ip[i] + " | status: "+status+"\n");
-
+				String status = new ListenServer().clientStatus(ip[i], 500);
+				sb.append("name: " + name[i] + " | ipadress: " + ip[i] + " | status: " + status + "\n");
 			}
+			modifierfound = true;
 			output = sb.toString();
-		}
-		if (modifier.equals("-a") || modifier.equals("-add")) {
+		} else if (modifier.equals("-a") || modifier.equals("-add")) {
 			String name = commandsplit[2];
 			String ipadress = commandsplit[3];
 			contacts.contactlist.add(new Contacts(contactentries + 1, name, ipadress));
 			contacts.safecontacts();
 			contactentries++;
-			output = "new contact with name: '" + name + "' and ipadress: "+ipadress+"' saved.";
+			modifierfound = true;
+			output = "new contact with name: '" + name + "' and ipadress: " + ipadress + "' saved.";
 		}
 		return output;
 	}

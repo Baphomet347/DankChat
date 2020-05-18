@@ -129,7 +129,10 @@ public class ChatWindow implements KeyListener, ActionListener {
 			String input = getInputFromJTextArea(jta);
 			if (input.startsWith("/") == true) {
 				outputToJTextArea(jta, ch.executeCommand(input));
+			} else {
+				//NACHRICHT SENDEN
 			}
+			outputToJTextArea(jta, "\n");
 		}
 	}
 

@@ -19,7 +19,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Contacts {
@@ -28,13 +27,12 @@ public class Contacts {
 	String tmpname, tmpip;
 	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
 
-
 	public Contacts() {
-		//		contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
-		//		contactlist.add(new Contacts(1,"Thomas", "localhost"));
-		//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
-		//		safecontacts();
-		//		loadentries();
+		// contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
+		// contactlist.add(new Contacts(1,"Thomas", "localhost"));
+		// contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
+		// safecontacts();
+		// loadentries();
 	}
 
 	public Contacts(int id, String name, String ipadress) {
@@ -82,13 +80,14 @@ public class Contacts {
 			System.out.println("\nCurrent Element :" + nNode.getNodeName());
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
-				System.out.println("id: "+ eElement.getElementsByTagName("id").item(0).getTextContent());
+				System.out.println("id: " + eElement.getElementsByTagName("id").item(0).getTextContent());
 				System.out.println("name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
 				System.out.println("ip : " + eElement.getElementsByTagName("ipadress").item(0).getTextContent());
 			}
 		}
 		System.out.println("Kontakte Geladen.");
 	}
+
 	public int loadentries() {
 		File fXmlFile = new File("contactlist.xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -136,7 +135,7 @@ public class Contacts {
 			tmpname = eElement.getElementsByTagName("name").item(0).getTextContent();
 			tmpip = eElement.getElementsByTagName("ipadress").item(0).getTextContent();
 		}
-		return new String[] {tmpname, tmpip};
+		return new String[] { tmpname, tmpip };
 	}
 
 	public static void main(String[] args) {
