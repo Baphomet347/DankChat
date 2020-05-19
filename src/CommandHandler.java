@@ -64,6 +64,7 @@ public class CommandHandler {
 				}
 			};
 			chat.start();
+			new ChatClient().addHost(ip);
 		} else {
 			output = "establishing connection to [" + ip + "] failed.\n";
 		}

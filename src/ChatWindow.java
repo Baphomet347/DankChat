@@ -115,27 +115,34 @@ public class ChatWindow implements KeyListener, ActionListener {
 	}
 
 	void outputToJTextArea(JTextArea jta, String text) {
-		jta.append(text);
-		jta.setCaretPosition(jta.getDocument().getLength());
-		synchronized (this) {
-			initialCaretPosition = jta.getCaretPosition();
+		try {
+			jta.append(text);
+			jta.setCaretPosition(jta.getDocument().getLength());
+			synchronized (this) {
+				initialCaretPosition = jta.getCaretPosition();
+			}
+		} catch (Exception e) {
+
 		}
 	}
+
 
 	void begin() {
 		CommandHandler ch = new CommandHandler();
 		while (true) {
-			outputToJTextArea(jta, ChatClient.username+": ");
+			outputToJTextArea(jta, ChatClient.username + ": ");
 			String input = getInputFromJTextArea(jta);
 			if (input.startsWith("/") == true) {
 				outputToJTextArea(jta, ch.executeCommand(input));
 			} else {
-				if (ConnectionHandler.connected==true) {
-
+				if (ConnectionHandler.connected == true) {
+					System.out.println();
+					new ChatClient().sendMessage(input);
 				}
 			}
 		}
 	}
+
 	public void output(String text) {
 		outputToJTextArea(jta, text);
 	}
