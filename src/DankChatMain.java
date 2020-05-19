@@ -10,7 +10,7 @@ public class DankChatMain {
 		Thread listenthread = new Thread() {
 			@Override
 			public void run() {
-				new ListenServer().listen();
+				new ConnectionHandler().listen();
 			}
 		};
 		listenthread.start();

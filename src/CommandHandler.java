@@ -14,7 +14,6 @@ public class CommandHandler {
 		commandsplit = input.split(" ", 3);
 		String command = null, modifier = null;
 		command = commandsplit[0];
-		System.out.println(command);
 		if (commandsplit.length == 1) {
 			modifierfound = false;
 		} else if (commandsplit[1] != null) {
@@ -30,25 +29,51 @@ public class CommandHandler {
 				finaloutput = contacts(modifier);
 				break;
 			case "/chat":
+				finaloutput = establishConnection(modifier);
 				break;
 			case "/username":
+				finaloutput = setUsername(modifier);
 				break;
 			default:
 				commandfound = false;
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			finaloutput = "command not found. for help type /help or /?";
+			finaloutput = "command not found. for help type /help or /?\n";
 		}
 		if (modifierfound == false) {
-			finaloutput = "modifier not found. try " + command + " -h, -help or -?";
+			finaloutput = "modifier not found. try " + command + " -h, -help or -?\n";
 		}
 		if (commandfound == false) {
-			finaloutput = "command not found. for help type /help or /?";
+			finaloutput = "command not found. for help type /help or /?\n";
 		}
 		System.out.println();
 		return finaloutput;
 
+	}
+
+	public String establishConnection(String ip) {
+		String output;
+		modifierfound = true;
+		if (new ConnectionHandler().establishConnection(ip) == true) {
+			output = "succesfully connected to [" + ip + "].\n";
+			Thread chat = new Thread() {
+				@Override
+				public void run() {
+					new ChatServer().listen();
+				}
+			};
+			chat.start();
+		} else {
+			output = "establishing connection to [" + ip + "] failed.\n";
+		}
+		return output;
+	}
+
+	public String setUsername(String username) {
+		ChatClient.username = username;
+		modifierfound = true;
+		return "succesfully changed username to '" + ChatClient.username + "'.\n";
 	}
 
 	public String contacts(String modifier) {
@@ -62,7 +87,7 @@ public class CommandHandler {
 			for (int i = 0; i < contactentries; i++) {
 				name[i] = (contacts.loadcontact(i)[0]).toString();
 				ip[i] = (contacts.loadcontact(i)[1]).toString();
-				String status = new ListenServer().clientStatus(ip[i], 500);
+				String status = new ConnectionHandler().clientStatus(ip[i], 500);
 				sb.append("name: " + name[i] + " | ipadress: " + ip[i] + " | status: " + status + "\n");
 			}
 			modifierfound = true;

@@ -125,15 +125,19 @@ public class ChatWindow implements KeyListener, ActionListener {
 	void begin() {
 		CommandHandler ch = new CommandHandler();
 		while (true) {
-			outputToJTextArea(jta, "Bruh: ");
+			outputToJTextArea(jta, ChatClient.username+": ");
 			String input = getInputFromJTextArea(jta);
 			if (input.startsWith("/") == true) {
 				outputToJTextArea(jta, ch.executeCommand(input));
 			} else {
-				//NACHRICHT SENDEN
+				if (ConnectionHandler.connected==true) {
+
+				}
 			}
-			outputToJTextArea(jta, "\n");
 		}
+	}
+	public void output(String text) {
+		outputToJTextArea(jta, text);
 	}
 
 	void configureJTextAreaForInputOutput(JTextArea jta) {
@@ -150,7 +154,7 @@ public class ChatWindow implements KeyListener, ActionListener {
 	}
 
 	void createAndShowGUI() {
-		title = "Console";
+		title = "DankChat";
 		jf = InitComponents.setupJFrameAndGet(title, screenWidth - 200, screenHeight - 200);
 		jta = InitComponents.setupJTextAreaAndGet("", 1000, 100, true, true, true, false, 0, 0, 0, 0);
 		configureJTextAreaForInputOutput(jta);

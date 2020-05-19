@@ -28,12 +28,12 @@ public class Contacts {
 	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
 
 	public Contacts() {
-//		contactlist.add(new Contacts(1,"Thomas", "localhost"));
-//		contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
-//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
-//		 safecontacts();
-		 loadentries();
-		loadcontacts();
+		//		contactlist.add(new Contacts(1,"Thomas", "localhost"));
+		//		contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
+		//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
+		//		 safecontacts();
+		//		 loadentries();
+		//		loadcontacts();
 	}
 
 	public Contacts(int id, String name, String ipadress) {
