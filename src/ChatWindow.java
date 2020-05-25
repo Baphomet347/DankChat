@@ -23,13 +23,14 @@ public class ChatWindow implements KeyListener, ActionListener {
 	String title;
 	String text;
 	JFrame jf;
-	JTextArea jta;
+	static JTextArea jta;
 	JScrollPane jsp;
 
-	int initialCaretPosition;
+	static int initialCaretPosition;
 	int currentCaretPosition;
 	boolean inputAvailable = false;
 
+	int pointerPos=0;
 	int BACKSPACE = 8;
 	int ENTER = 10;
 	int PG_UP = 33; // do nothing for this key pressed
@@ -67,7 +68,29 @@ public class ChatWindow implements KeyListener, ActionListener {
 	@Override
 	public void keyPressed(KeyEvent ke) {
 		int keyCode = ke.getKeyCode();
-		if (keyCode == ENTER) {
+
+		if ((keyCode == PG_UP) || (keyCode == PG_DN) || (keyCode == UP_ARROW) || (keyCode == DOWN_ARROW)
+				|| ((keyCode == A) && (ke.getModifiersEx() == CTRL))) {
+			ke.consume();
+		} else if ((keyCode == LEFT_ARROW) || (keyCode == BACKSPACE)
+				|| ((keyCode == H) && (ke.getModifiersEx() == CTRL))) {
+			synchronized (this) {
+				if (jta.getCaretPosition() <= initialCaretPosition) {
+					ke.consume();
+				}
+			}
+		} else if (keyCode == HOME) {
+			synchronized (this) {
+				jta.setCaretPosition(initialCaretPosition);
+				ke.consume();
+			}
+		} else if (keyCode == END) {
+			synchronized (this) {
+				jta.setCaretPosition(jta.getDocument().getLength());
+				ke.consume();
+			}
+		}
+		else if (keyCode == ENTER) {
 			jta.setCaretPosition(jta.getDocument().getLength());
 			synchronized (this) {
 				currentCaretPosition = jta.getCaretPosition();
@@ -114,9 +137,12 @@ public class ChatWindow implements KeyListener, ActionListener {
 		}
 	}
 
-	void outputToJTextArea(JTextArea jta, String text) {
+	public void outputToJTextArea(JTextArea jta, String text) {
 		try {
 			jta.append(text);
+			jta.setCaretPosition(jta.getDocument().getLength());
+			jta.repaint();
+			// jta.append(text);
 			jta.setCaretPosition(jta.getDocument().getLength());
 			synchronized (this) {
 				initialCaretPosition = jta.getCaretPosition();
@@ -126,6 +152,19 @@ public class ChatWindow implements KeyListener, ActionListener {
 		}
 	}
 
+	public static void outputReceived(String text) {
+		try {
+			text = "RECEIVED: "+text+"\n";
+			jta.append(text);
+			jta.setCaretPosition(jta.getDocument().getLength());
+			jta.repaint();
+			jta.setCaretPosition(jta.getDocument().getLength());
+			initialCaretPosition = jta.getCaretPosition();
+		} catch (Exception e) {
+
+		}
+
+	}
 
 	void begin() {
 		CommandHandler ch = new CommandHandler();
@@ -141,10 +180,6 @@ public class ChatWindow implements KeyListener, ActionListener {
 				}
 			}
 		}
-	}
-
-	public void output(String text) {
-		outputToJTextArea(jta, text);
 	}
 
 	void configureJTextAreaForInputOutput(JTextArea jta) {
