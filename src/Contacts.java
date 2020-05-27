@@ -31,7 +31,7 @@ public class Contacts {
 		//		contactlist.add(new Contacts(1,"Thomas", "localhost"));
 		//		contactlist.add(new Contacts(2,"Julius", "10.217.77.56"));
 		//		contactlist.add(new Contacts(3,"Bruh", "0.0.0.0"));
-		//		safecontacts();
+		//		 safecontacts();
 		//		 loadentries();
 		//		loadcontacts();
 	}
@@ -42,9 +42,6 @@ public class Contacts {
 		this.ipadress = ipadress;
 	}
 
-	public void addContact(int id, String name, String ipadress) {
-		contactlist.add(new Contacts(id, name, ipadress));
-	}
 	public void safecontacts() {
 		try {
 			final JAXBContext context = JAXBContext.newInstance(Contacts.class);

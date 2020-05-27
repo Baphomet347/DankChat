@@ -15,14 +15,6 @@ public class DankChatMain {
 		};
 		listenthread.start();
 
-		Thread chatthread = new Thread() {
-			@Override
-			public void run() {
-				new ChatServer().listen();
-			}
-		};
-		chatthread.start();
-
 		Thread menuthread = new Thread() {
 			@Override
 			public void run() {
