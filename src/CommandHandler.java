@@ -34,6 +34,7 @@ public class CommandHandler {
 			case "/username":
 				finaloutput = setUsername(modifier);
 				break;
+
 			default:
 				commandfound = false;
 			}
@@ -57,13 +58,13 @@ public class CommandHandler {
 		modifierfound = true;
 		if (new ConnectionHandler().establishConnection(ip) == true) {
 			output = "succesfully connected to [" + ip + "].\n";
-			Thread chat = new Thread() {
-				@Override
-				public void run() {
-					new ChatServer().listen();
-				}
-			};
-			chat.start();
+			//			Thread chat = new Thread() {
+			//				@Override
+			//				public void run() {
+			//					new ChatServer().listen();
+			//				}
+			//			};
+			//			chat.start();
 			new ChatClient().addHost(ip);
 		} else {
 			output = "establishing connection to [" + ip + "] failed.\n";
@@ -78,8 +79,8 @@ public class CommandHandler {
 	}
 
 	public String contacts(String modifier) {
+		contacts = new Contacts();
 		if (modifier.equals("-l") || modifier.equals("-list")) {
-			contacts = new Contacts();
 			contactentries = contacts.loadentries();
 			name = new String[contactentries];
 			ip = new String[contactentries];
@@ -94,13 +95,19 @@ public class CommandHandler {
 			modifierfound = true;
 			output = sb.toString();
 		} else if (modifier.equals("-a") || modifier.equals("-add")) {
-			String name = commandsplit[2];
-			String ipadress = commandsplit[3];
-			contacts.contactlist.add(new Contacts(contactentries + 1, name, ipadress));
-			contacts.safecontacts();
-			contactentries++;
+			output= "feature has not been implemented yet\n";
+			//			String[] modifiersplit = new String[3];
+			//			String name = modifiersplit[2].toString();
+			//			String ipadress = modifiersplit[3].toString();
+			//			contacts.addContact(contactentries+1, name, ipadress);
+			//			contacts.safecontacts();
+			//			contactentries++;
+			//			modifierfound = true;
+			//			output = "new contact with name: '" + name + "' and ipadress: " + ipadress + "' saved.";
+		} else if (modifier.equals("-h") || modifier.equals("-help")) {
+			output = "contacts -l/-list: lists all contacts from your contactbook\n"
+					+ "contacts -a/-add: add a new contact to your contactbook\n";
 			modifierfound = true;
-			output = "new contact with name: '" + name + "' and ipadress: " + ipadress + "' saved.";
 		}
 		return output;
 	}
