@@ -9,13 +9,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-public class ChatWindow implements KeyListener, ActionListener {
+public class ChatWindow implements KeyListener, ActionListener{
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int screenWidth = screenSize.width;
@@ -176,7 +180,7 @@ public class ChatWindow implements KeyListener, ActionListener {
 			} else {
 				if (ConnectionHandler.connected == true) {
 					System.out.println();
-					new ChatClient().sendMessage(input);
+					//					new ChatClient().sendMessage(input);
 				}
 			}
 		}
@@ -206,12 +210,24 @@ public class ChatWindow implements KeyListener, ActionListener {
 		jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		jf.add(jsp);
 		// jf.setLocation(screenWidth / 5, screenHeight / 6);
+		WindowListener exitListener = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirm = JOptionPane.showOptionDialog(null, "are you sure to close DankChat?",
+						"Exit Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (confirm == 0) {
+					System.exit(0);
+				}
+			}
+		};
+		jf.addWindowListener(exitListener);
 
 		jta.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+		jf.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
 		jta.setBackground(Color.BLACK);
 		jta.setForeground(Color.WHITE);
-
 		jf.setVisible(true);
-	} // end of createAndShowGUI
+	}
+
 
 }
