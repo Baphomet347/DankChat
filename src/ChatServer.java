@@ -11,15 +11,17 @@ public class ChatServer extends Thread {
 	ArrayList<String> connectedIPs= new ArrayList<String>();
 	String sendtext;
 
+	String  username, receivedtext, fontColor;
+	int messageFlag;
+
+	String[] message=null;
+
 	public ChatServer() {
 
 	}
 
 	@Override
 	public void run() {
-		//		connectedIPs.add("127.0.0.1");
-		//		connectedIPs.add("192.168.20.3");
-		//		connectedIPs.add("localhost");
 		for(String ip : connectedIPs) {
 			String ipadress = ip;
 			System.out.println(ipadress);
@@ -49,17 +51,21 @@ public class ChatServer extends Thread {
 			try {
 				Socket socket = server.accept();
 				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-				String[] message=null;
 				try {
 					message = (String[]) in.readObject();
 				} catch (ClassNotFoundException e) {
 
 					e.printStackTrace();
 				}
-				String receivedtext = new MessageBuilder().getSendtext(message);
-				int messageFlag = new MessageBuilder().getMessageFlag(message);
-				System.out.println("Server received: "+receivedtext+"\nwith Flag: "+messageFlag);
+				receivedtext = new MessageBuilder().getSendtext(message);
+				username = new MessageBuilder().getUser(message);
+				messageFlag = new MessageBuilder().getMessageFlag(message);
+
+				System.out.println("Server received: '"+receivedtext+"' from user: '"+username+"' with Flag: '"+messageFlag+"'");
 				//				ChatWindow.outputReceived(receivedtext);
+
+				interpretMessageFlag();
+
 				socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -68,10 +74,17 @@ public class ChatServer extends Thread {
 		}
 	}
 	public void addClient(String ip) {
+		System.out.println("IP: "+ip+" added to connection.");
 		connectedIPs.add(ip);
 	}
-	public void interpretMessageFlag(int messageFlag) {
+	public void interpretMessageFlag() {
+		switch (messageFlag) {
+		case 1: ChatWindow.outputReceive(username+": "+receivedtext);
+		break;
+		case 69: ChatWindow.outputReceive("--- IP: "+receivedtext+" joined the chat ---");
 
+		break;
+		}
 	}
 	//	public static void main (String[] args) {
 	//		new ChatServer().run();

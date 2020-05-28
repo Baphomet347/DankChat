@@ -10,7 +10,8 @@ public class ChatClient extends Thread {
 	String ipadressserver;
 	ServerSocket server;
 	final static int clientPort = 6970;
-	static int connectedchats;
+	static boolean connected;
+
 	String sendtext, fontcolor, messageFlag;
 	String[] message= new String[4];
 
@@ -19,7 +20,8 @@ public class ChatClient extends Thread {
 		try {
 			Socket socket = new Socket(ipadressserver, ChatServer.serverPort);
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			String[] message = new MessageBuilder().buildMessage(username, sendtext, "Color.BLACK", 1);
+			//			String[] message = new MessageBuilder().buildMessage(username, sendtext, "Color.BLACK", 1);
+			System.out.println("Client: "+sendtext);
 			out.writeObject(message);
 			out.flush();
 			out.close();
@@ -27,6 +29,11 @@ public class ChatClient extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void sendMessage(String[] message) {
+		this.message = message;
+		run();
 	}
 
 	public void listen() {
@@ -58,24 +65,19 @@ public class ChatClient extends Thread {
 	}
 	public void connectToServer(String serverIp) {
 		try {
-			Socket socket = new Socket(serverIp, ChatServer.serverPort);
-
+			ipadressserver = serverIp;
+			Socket socket = new Socket(ipadressserver, ChatServer.serverPort);
 			sendtext = InetAddress.getLocalHost().getHostAddress();
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			String[] message = new MessageBuilder().buildMessage(username, sendtext, "Color.BLACK", 69);
 			out.writeObject(message);
 			out.flush();
 			out.close();
+			connected = true;
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	//	public void addHost(String ip) {
-	//		connectedchats++;
-	//		ipadressserver = ip;
-	//		System.out.println("ADDED: " + ipadressserver);
-	//
-	//	}
 
 }

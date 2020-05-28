@@ -9,20 +9,23 @@ public class ConnectionHandler {
 	ServerSocket server;
 	int serverPort = 6969;
 	boolean serverup = false;
-	static boolean connected = false;
+
 	boolean chatting=false;
 
 	public void startChat() {
 
 		String serverIp="localhost";
 		Object[] options1 = { "JOIN EXISTING CHAT ROOM", "CREATE NEW CHATROOM"};
-		int result = JOptionPane.showOptionDialog(null, null,"Enter a Number",
+		int result = JOptionPane.showOptionDialog(null, null,"JOIN OR HOST CHAT",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 				null, options1, null);
 		if (result == JOptionPane.YES_OPTION){
 
 			serverIp = JOptionPane.showInputDialog("What Server do you want to connect to?","");
 			System.out.println("JOIN");
+			if (clientStatus(serverIp, 700).equals("offline")) {
+				ChatWindow.outputReceive("Chatserver is offline.");
+			}
 
 		} else if (result==JOptionPane.NO_OPTION ) {
 			System.out.println("HOST");
@@ -40,6 +43,7 @@ public class ConnectionHandler {
 			System.exit(0);
 		}
 		new ChatClient().connectToServer(serverIp);
+
 	}
 
 

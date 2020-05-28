@@ -156,11 +156,11 @@ public class ChatWindow implements KeyListener, ActionListener{
 		}
 	}
 
-	public static void outputReceived(String text) {
+	public static void outputReceive(String text) {
 		try {
-			text = "RECEIVED: "+text+"\n";
+			text = "RECEIVED: \n"+text;
 			jta.append(text);
-			jta.setCaretPosition(jta.getDocument().getLength());
+			jta.append("\n"+ChatClient.username+": ");
 			jta.repaint();
 			jta.setCaretPosition(jta.getDocument().getLength());
 			initialCaretPosition = jta.getCaretPosition();
@@ -171,18 +171,17 @@ public class ChatWindow implements KeyListener, ActionListener{
 	}
 
 	void begin() {
-		CommandHandler ch = new CommandHandler();
 		while (true) {
 			outputToJTextArea(jta, ChatClient.username + ": ");
 			String input = getInputFromJTextArea(jta);
 			if (input.startsWith("/") == true) {
-				outputToJTextArea(jta, ch.executeCommand(input));
-			} else {
-				if (ConnectionHandler.connected == true) {
-					System.out.println();
-					//					new ChatClient().sendMessage(input);
-				}
+				outputToJTextArea(jta, new CommandHandler().executeCommand(input));
+			} else if (ChatClient.connected == true) {
+				new ChatClient().sendMessage(new MessageBuilder().buildMessage(ChatClient.username+"22", input, "Color.WHITE", 1));
+
+				//					new ChatClient().sendMessage(input);
 			}
+
 		}
 	}
 
